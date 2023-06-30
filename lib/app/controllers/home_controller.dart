@@ -29,7 +29,7 @@ class HomeController {
             imageUrl: e['img'] as String,
             title: e['title'] as String,
             qtdComment: _generateInt(2000, 1000),
-            rating: _generateDouble(5, 4),
+            rating: _generateDouble(5, 2),
             distance: _generateDouble(1, 3),
             time: _generateInt(90, 25)))
         .toList();
