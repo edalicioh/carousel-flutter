@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:carousel/app/controllers/home_controller.dart';
 import 'package:carousel/app/models/food_carousel.dart';
+import 'package:carousel/app/widgets/custom_card_info.dart';
 import 'package:carousel/app/widgets/custom_rating_bar.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Bangladesh',
+                'Brasil',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    'Narshigdi',
+                    'Camboriú',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -83,121 +84,39 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(
           children: [
             Container(
-                height: MediaQuery.sizeOf(context).height * .35,
-                padding: const EdgeInsets.only(bottom: 20, top: 10),
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    Matrix4 matrix = getTransform(index, context);
+              height: MediaQuery.sizeOf(context).height * .35,
+              padding: const EdgeInsets.only(bottom: 20, top: 10),
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  Matrix4 matrix = getTransform(index, context);
 
-                    var food = list[index];
-                    return Transform(
-                      transform: matrix,
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            height: MediaQuery.sizeOf(context).height * .23,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(food.imageUrl),
-                              ),
-                              color: Colors.grey,
+                  var food = list[index];
+                  return Transform(
+                    transform: matrix,
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          height: MediaQuery.sizeOf(context).height * .23,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(food.imageUrl),
                             ),
+                            color: Colors.grey,
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                left: 12,
-                                right: 12,
-                                bottom: 12,
-                              ),
-                              height: MediaQuery.sizeOf(context).height * .18,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
-                              ),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black54,
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      food.title,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        CustomRatingBar(
-                                          rating: food.rating,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          food.rating.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          "${food.qtdComment.toString()} Comments",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.grey,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        info(
-                                            label: 'Normal',
-                                            icon: Icons.circle_rounded,
-                                            color: Colors.orangeAccent),
-                                        info(
-                                            label:
-                                                "${food.distance.toString()}km",
-                                            icon: Icons.location_on,
-                                            color: Colors.green),
-                                        info(
-                                            label: "${food.time.toString()}min",
-                                            icon: Icons.access_time_rounded,
-                                            color: Colors.redAccent),
-                                      ],
-                                    )
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                )),
+                        ),
+                        CustomCardInfo(food: food)
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
             DotsIndicator(
               dotsCount: list.length,
               position: _indexPage.roundToDouble().toInt(),
@@ -240,27 +159,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ..setTranslationRaw(0, trans, 1);
     }
     return matrix;
-  }
-
-  Widget info(
-      {required String label, required IconData icon, required Color color}) {
-    return Row(
-      children: [
-        Row(
-          children: [
-            Icon(icon, size: 18, color: color),
-            SizedBox(width: 5),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
-              ),
-            )
-          ],
-        ),
-      ],
-    );
   }
 }
